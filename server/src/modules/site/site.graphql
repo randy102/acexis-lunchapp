@@ -1,0 +1,14 @@
+type Query{
+    sites: [Site]!
+}
+
+type Mutation{
+    addSite(name: String): Site
+    deleteSite(id: String): Site
+    updateSite(id: String, name: String): Site
+}
+
+type Site{
+    _id: String
+    name: String
+}

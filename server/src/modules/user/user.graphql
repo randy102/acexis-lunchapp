@@ -1,0 +1,38 @@
+type User {
+  _id: String
+  name: String
+  password: String
+  role: UserRole
+  status: UserStatus
+  site: Site
+}
+
+type Query {
+  users(site: String!): [User]!
+  login(name: String!, password: String!): String
+}
+
+type Mutation{
+  addUser(user: AddUserInput): User
+  deleteUser(id: String!): User
+  updateUser(id: String!,data: String!): User
+} 
+
+input AddUserInput{
+  name: String!
+  password: String!
+  role: UserRole!
+  status: UserStatus!
+  site: String!
+}
+
+enum UserRole{
+  ADMIN
+  MOD
+  USER
+}
+
+enum UserStatus{
+  ACTIVE
+  BLOCKED
+}

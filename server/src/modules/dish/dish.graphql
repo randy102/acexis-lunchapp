@@ -1,0 +1,15 @@
+type Query {
+  dishes(shop: String): [Dish]
+}
+
+type Mutation {
+  addDish(name: String, shop: String): Dish
+  deleteDish(id: String): Dish
+}
+
+type Dish {
+  _id: String
+  name: String
+  shop: String
+}
+

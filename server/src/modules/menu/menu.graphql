@@ -1,0 +1,30 @@
+type Query{
+    menus(site: String!): [Menu]!
+}
+
+type Mutation{
+    addMenu(menu: AddMenuInput!): Menu
+    deleteMenu(id: String!): Menu
+    updateMenu(id: String!, status: MenuStatus!, site: String!): Menu
+}
+
+input AddMenuInput{
+    name: String!
+    site: String!
+    status: MenuStatus!
+}
+
+type Menu{
+    _id: String
+    name: String
+    site: Site
+    status: MenuStatus
+    created_date: String
+}
+
+enum MenuStatus{
+    UNPUBLISHED
+    PUBLISHED
+    CLOSED
+    BLOCKED
+}

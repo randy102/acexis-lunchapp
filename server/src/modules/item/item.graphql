@@ -1,0 +1,17 @@
+type Query{
+    items(menu: String): [Item]!
+}
+
+type Mutation{
+    addItem(menu: String, dish: String, total: Int): Item
+    increaseItem(id: String): Item
+    deleteItem(id: String): Item
+}
+
+type Item{
+    _id: String
+    dish: String
+    menu: String
+    total: Int
+    current: Int
+}

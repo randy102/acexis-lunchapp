@@ -1,0 +1,18 @@
+type Query{
+    orders(filter: String): [Order]!
+}
+
+type Mutation{
+    addOrder(user: String, item: String, quantity: Int): Order
+    increaseOrder(id: String): Order
+    decreaseOrder(id: String): Order
+    deleteOrder(id: String): Order
+}
+
+type Order{
+    _id: String
+    user: String
+    item: String
+    quantity: Int
+    created_date: String
+}
