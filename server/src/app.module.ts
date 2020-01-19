@@ -10,6 +10,8 @@ import { OrderModule } from './modules/order/order.module';
 import { MenuModule } from './modules/menu/menu.module';
 import { ItemModule } from './modules/item/item.module';
 import { ShopModule } from './modules/shop/shop.module'
+import { APP_GUARD } from '@nestjs/core'
+import { GqlAuthGuard } from './common/guard/auth.guard'
 @Module({
   imports: [
     ConfigModule.forRoot(),

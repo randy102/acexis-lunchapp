@@ -8,7 +8,7 @@ type User {
 }
 
 type Query {
-  users(site: String!): [User]!
+  users(site: String): [User]!
   login(name: String!, password: String!): String
 }
 
@@ -16,6 +16,7 @@ type Mutation{
   addUser(user: AddUserInput): User
   deleteUser(id: String!): User
   updateUser(id: String!,data: String!): User
+  updateUserSelf(data: String!): User
 } 
 
 input AddUserInput{

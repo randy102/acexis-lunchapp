@@ -8,8 +8,7 @@ const httpLink = new HttpLink({
 const authLink = setContext((_, { headers }) => ({
   headers: {
     ...headers,
-    authorization: localStorage.getItem('access-token') || 'eyJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1ZTIxYWNmNTY0ODVjMzEzMjhjOGVjOGIiLCJuYW1lIjoicXVhbmciLCJwYXNzd29yZCI6IjEyMzQ1Iiwicm9sZSI6IkFETUlOIiwic3RhdHVzIjoiQkxPQ0tFRCIsInNpdGUiOiIxIn0.om0BL-ZgcNvykrjFotOoltAmrGY4jj3oSeotqKznmoI',
-    currentsite: localStorage.getItem('currentsite') || ''
+    authorization: localStorage.getItem('token') || ''
   }
 }))
 

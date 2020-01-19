@@ -18,8 +18,18 @@ export class UserService {
         return <User>decode;
     }
 
+    validate(token: string): Boolean{
+        try{
+            return <Boolean>this.jwtService.verify(token);
+        }
+        catch(err){ return false }
+    }
+
     users(site: string): Promise<User[]> {
-        return this.repo.find({ site });
+        if(site === "")
+            return this.repo.find();
+        else
+            return this.repo.find({ site });
     }
 
     login(name: string, password: string): Promise<string> {
@@ -32,7 +42,7 @@ export class UserService {
                 const token = this.jwtService.sign(JSON.stringify(user[0]));
                 resolve(token);
             }
-            else reject("Login fail!");
+            else reject("error"); 
         });
     }
 

@@ -11,6 +11,10 @@ export class SiteService {
         return this.repo.find();
     }
 
+    site(id): Promise<Site>{
+        return this.repo.findOne(id);
+    }
+
     addSite(name: string): Promise<Site>{
         const site = new Site();
         site.name = name;
