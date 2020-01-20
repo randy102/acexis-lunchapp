@@ -55,7 +55,7 @@ export default function UserEditBtn({ gridApi, refetch }) {
         setVisible(false);
         setConfirmLoading(false);
         setPassword("");
-    }, [data, refetch]);
+    }, [data]);
     
     return (
         <div className="user-btn">

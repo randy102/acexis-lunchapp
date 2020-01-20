@@ -4,6 +4,19 @@ import { Link } from "react-router-dom";
 const { Sider } = Layout;
 
 export default function LeftBar(props) {
+   
+    const pages = [
+        '',
+        'user',
+        'site',
+        'shop',
+        'menu',
+        'order'
+    ];
+
+    const curPath = props.location.pathname.split("/")[2];
+    const curKey = String(pages.indexOf(curPath));
+   
     return (
         <div id="LeftBarWrap">
             <Sider
@@ -15,7 +28,7 @@ export default function LeftBar(props) {
                     top: 40
                 }}
             >
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+                <Menu theme="dark" mode="inline" selectedKeys={[curKey]}>
                     <Menu.Item key="1">
                         <Link to="/admin/user">
                             <Icon type="user" />

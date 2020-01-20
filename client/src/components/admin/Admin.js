@@ -8,7 +8,7 @@ export default function Admin(props) {
     return (
         <div>
             <Header/>
-            <LeftBar/>
+            <LeftBar {...props}/>
             <AdminRoute match={props.match}/>
         </div>
     )

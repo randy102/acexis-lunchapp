@@ -22,4 +22,9 @@ export class DishResolvers {
     async deleteDish(@Args() {id}){
         return await this.dishService.deleteDish(id);
     }
+
+    @Mutation()
+    async updateDish(@Args() {id, name}){
+        return await this.dishService.updateDish(id,name);
+    }
 }

@@ -8,7 +8,7 @@ import { validateUserInput } from "../../../services/user";
 
 const { Option } = Select;
 
-export default function UserAddBtn(props) {
+export default function UserAddBtn({refetch}) {
     const [visible, setVisible] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [role, setRole] = useState('');
@@ -53,14 +53,14 @@ export default function UserAddBtn(props) {
     }
     
     useEffect(()=>{
-        props.refetch();
+        refetch();
         setConfirmLoading(false);
         setVisible(false);
         setRole('');
         setSite('');
         setName('');
         setPassword('');
-    },[data, props])
+    },[data])
     
     return (
         <div className="user-btn">

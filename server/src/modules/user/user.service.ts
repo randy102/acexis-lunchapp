@@ -47,13 +47,17 @@ export class UserService {
     }
 
     addUser(user: AddUserInput): Promise<User>{
-        const u = new User(user);
-        return this.repo.save(u);
+        return this.repo.save(new User(user));
     }
 
-    async deleteUser(id: string): Promise<User>{
-        const user = await this.repo.findOne(id);
-        return this.repo.remove(user);
+    async deleteUser(id: string){
+       
+        return this.repo.delete(id);
+    }
+
+    async deleteUserBySite(site: string): Promise<User[]>{
+        const users = await this.repo.find({site});
+        return this.repo.remove(users);
     }
 
     async updateUser(id: string, data: string): Promise<User>{
@@ -66,5 +70,9 @@ export class UserService {
             return this.repo.save(user);
         }
         else return user;
+    }
+
+    countUser(site: string): Promise<number>{
+        return this.repo.count({site});
     }
 }

@@ -11,4 +11,5 @@ type Mutation{
 type Site{
     _id: String
     name: String
+    count: Int
 }

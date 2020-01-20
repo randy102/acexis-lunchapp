@@ -5,6 +5,7 @@ type Query {
 type Mutation {
   addDish(name: String, shop: String): Dish
   deleteDish(id: String): Dish
+  updateDish(id: String, name: String): Dish
 }
 
 type Dish {

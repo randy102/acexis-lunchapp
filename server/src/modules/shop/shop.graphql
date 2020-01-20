@@ -4,10 +4,12 @@ type Query{
 
 type Mutation{
     addShop(name: String!): Shop
-    deleteShop(id: String): Shop
+    deleteShop(id: String!): Shop
+    updateShop(id: String!, name: String!): Shop
 }
 
 type Shop{
     _id: String
     name: String
+    dishes: Int
 }

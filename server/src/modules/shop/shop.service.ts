@@ -23,8 +23,11 @@ export class ShopService {
         return this.repo.save(shop);
     }
 
-    async deleteShop(id: string): Promise<Shop> {
-        const shop = await this.repo.findOne(id);
-        return this.repo.remove(shop);
+    async updateShop(id: string, name:string){
+        return this.repo.update(id, {name});
+    }
+
+    async deleteShop(id: string) {
+        return this.repo.delete(id);
     }
 }
