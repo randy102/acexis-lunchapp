@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Form, Input, Modal, message } from "antd";
 import { useMutation } from "@apollo/client";
 import { ADD_SITE } from "../../../graphql/site";
-import { validateUserInput } from "../../../services/user";
+import { checkEmpty } from "../../../services/user";
 
 export default function SiteAddBtn({refetch}) {
     const [visible, setVisible] = useState(false);
@@ -19,7 +19,7 @@ export default function SiteAddBtn({refetch}) {
     }
 
     function handleOk() {
-        const { isValid, error } = validateUserInput({ name });
+        const { isValid, error } = checkEmpty({ name });
 
         if (!isValid) {
             message.error(error);

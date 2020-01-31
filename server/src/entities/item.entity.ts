@@ -6,7 +6,10 @@ export class Item{
     _id: ObjectID;
     
     @Column()
-    dish: string;
+    shop: string;
+
+    @Column()
+    name: string;
 
     @Column()
     menu: string;
@@ -15,5 +18,5 @@ export class Item{
     total: number;
 
     @Column()
-    current: number;
+    booked: number;
 }

@@ -12,11 +12,17 @@ type Query {
   login(name: String!, password: String!): String
 }
 
+type Result{
+  success: String
+  error: String
+}
+
 type Mutation{
   addUser(user: AddUserInput): User
   deleteUser(id: String!): User
   updateUser(id: String!,data: String!): User
   updateUserSelf(data: String!): User
+  changePassword(old: String, password: String): Result
 } 
 
 input AddUserInput{

@@ -15,5 +15,11 @@ export class Order{
     quantity: number;
 
     @Column()
+    note: string;
+
+    @Column()
+    confirmed: boolean;
+
+    @Column()
     created_date: string;
 }

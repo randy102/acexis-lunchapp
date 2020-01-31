@@ -11,17 +11,18 @@ export class MenuResolver {
 
     @Query()
     async menus(@Args() {site}){
-        return await this.menuService.menus(site);
+        const menu = await this.menuService.menus(site);
+        return menu.sort((a,b) =>  (a['id'] > b['id'] ? 1 : -1));
     }
 
     @Mutation()
-    async addMenu(@Args('menu') menu: AddMenuInput){
-        return await this.menuService.addMenu(menu);
+    async addMenu(@Args() {name, site, status} ){
+        return await this.menuService.addMenu({name, site, status});
     }
 
     @Mutation()
-    async updateMenu(@Args() {id, status, site}){
-        return await this.menuService.updateMenu(id,status,site);
+    async updateMenu(@Args() {id, status, name}){
+        return await this.menuService.updateMenu(id,status,name);
     }
 
     @Mutation()

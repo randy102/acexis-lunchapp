@@ -3,15 +3,19 @@ type Query{
 }
 
 type Mutation{
-    addItem(menu: String, dish: String, total: Int): Item
+    addItem(menu: String, total: Int, name: String): Item
+    addItemFromShop(menu: String, shop: String, items: String, total: Int): Boolean
     increaseItem(id: String): Item
+    decreaseItem(id: String): Item
     deleteItem(id: String): Item
+    updateItem(id: String, name: String,total: Int): Boolean
 }
 
 type Item{
     _id: String
-    dish: String
+    name: String
+    shop: String
     menu: String
     total: Int
-    current: Int
+    booked: Int
 }

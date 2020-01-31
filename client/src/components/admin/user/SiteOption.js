@@ -33,7 +33,7 @@ export default function SiteOption(props) {
                 onChange={value => props.setSite(value)}
                 name="site"
                 placeholder="Choose site..."
-                value={props.site}
+                value={props.site || undefined}
             >
                 {renderOption(data)}
             </Select>

@@ -35,7 +35,7 @@ export default function Shop() {
             <Row>
                 <Col span={11}>
                     <ShopAddBtn refetch={shopRefetch} />
-                    <ShopDeleteBtn gridApi={shopApi} refetch={shopRefetch} />
+                    <ShopDeleteBtn setCurShop={setCurShop} gridApi={shopApi} refetch={shopRefetch} />
                     <ShopEditBtn gridApi={shopApi} refetch={shopRefetch} />
                     <ShopGrid
                         handleClick={handleShopClick}

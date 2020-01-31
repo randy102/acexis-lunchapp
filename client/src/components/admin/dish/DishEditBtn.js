@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Input, message } from "antd";
 import { useMutation } from "@apollo/client";
 import EditBtn from "../custom/EditBtn";
-import { validateUserInput } from "../../../services/user";
+import { checkEmpty } from "../../../services/user";
 import { UPDATE_DISH } from "../../../graphql/dish";
 
 export default function DishEditBtn({ gridApi, refetch }) {
@@ -12,7 +12,7 @@ export default function DishEditBtn({ gridApi, refetch }) {
     const [updateDish, { data }] = useMutation(UPDATE_DISH);
     const [id, setId] = useState("");
     function handleOk() {
-        const { isValid, error } = validateUserInput({ name });
+        const { isValid, error } = checkEmpty({ name });
 
         if (!isValid) {
             message.error(error);

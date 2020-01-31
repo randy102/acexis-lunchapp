@@ -9,6 +9,16 @@ export const GET_SHOPS= gql`
     }
 `;
 
+export const GET_SHOPS_DISHES = gql`
+    query{
+        shops{
+            _id
+            name
+            items
+        }
+    }
+`
+
 export const ADD_SHOP = gql`
     mutation AddShop($name: String!){
         addShop(name: $name){

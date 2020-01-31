@@ -3,8 +3,7 @@ import { Menu, Icon, Layout } from "antd";
 import { Link } from "react-router-dom";
 const { Sider } = Layout;
 
-export default function LeftBar(props) {
-   
+function getKey(path){
     const pages = [
         '',
         'user',
@@ -14,21 +13,27 @@ export default function LeftBar(props) {
         'order'
     ];
 
-    const curPath = props.location.pathname.split("/")[2];
+    const curPath = path.split("/")[2] || "user";
     const curKey = String(pages.indexOf(curPath));
+    return [curKey]
+}
+
+const leftBarStyle = {
+    overflow: "auto",
+    height: "100vh",
+    position: "fixed",
+    left: 0,
+    top: 40
+}
+
+export default function LeftBar(props) {
    
     return (
         <div id="LeftBarWrap">
             <Sider
-                style={{
-                    overflow: "auto",
-                    height: "100vh",
-                    position: "fixed",
-                    left: 0,
-                    top: 40
-                }}
+                style={leftBarStyle}
             >
-                <Menu theme="dark" mode="inline" selectedKeys={[curKey]}>
+                <Menu theme="dark" mode="inline" selectedKeys={getKey(props.location.pathname)}>
                     <Menu.Item key="1">
                         <Link to="/admin/user">
                             <Icon type="user" />

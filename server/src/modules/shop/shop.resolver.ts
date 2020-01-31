@@ -21,6 +21,7 @@ export class ShopResolver {
 
     @Mutation()
     async deleteShop(@Args() {id}){
+        await this.dishService.deleteDishByShop(id);
         return await this.shopService.deleteShop(id);
     }
 
@@ -31,6 +32,6 @@ export class ShopResolver {
 
     @ResolveProperty()
     async dishes(@Parent() {_id: shop}){
-        return await this.dishService.countDish(shop);
+        return await this.dishService.dishes(shop);
     }
 }

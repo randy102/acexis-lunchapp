@@ -1,24 +1,37 @@
-#AdminRouteWrap{
+#AdminRouteWrap {
     padding-top: 40px;
     padding-left: 200px;
-}
-
-#AdminContentWrap{
-    width: 1000px;
+    width: 1200px;
     margin: 0 auto;
 }
 
-#LeftBarWrap a{
-    color:white;
+#LeftBarWrap a {
+    color: white;
     font-weight: 600;
 }
 
-#leftBarWrap .anticon{
+#leftBarWrap .anticon {
     font-size: 16px;
 }
 
-.user-btn{
+.user-btn {
     display: inline-block;
-    margin: 10px 0;
+    margin: 5px 0;
     margin-right: 10px;
+}
+
+.unclickable{
+    position: relative;
+}
+
+.unclickable:after{
+    content: '';
+    position: absolute;
+    left:0;
+    top:0;
+    right: 0;
+   height: 83px;
+    z-index:1;
+    background-color:transparent;
+  
 }

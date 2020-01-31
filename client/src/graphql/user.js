@@ -38,3 +38,12 @@ export const UPDATE_USER = gql`
         }
     }
 `
+
+export const CHANGE_PASSWORD = gql `
+    mutation ChangePassword($old: String!, $password: String!){
+        changePassword(old: $old, password: $password){
+            success
+            error
+        }
+    }
+`;

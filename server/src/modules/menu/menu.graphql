@@ -3,14 +3,14 @@ type Query{
 }
 
 type Mutation{
-    addMenu(menu: AddMenuInput!): Menu
+    addMenu(site: String!,status: MenuStatus!, name: String!): Menu
     deleteMenu(id: String!): Menu
-    updateMenu(id: String!, status: MenuStatus!, site: String!): Menu
+    updateMenu(id: String!, status: MenuStatus!, name: String!): Menu
 }
 
 input AddMenuInput{
     name: String!
-    site: String!
+    site: String
     status: MenuStatus!
 }
 

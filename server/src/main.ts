@@ -5,6 +5,7 @@ import { resolve } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useStaticAssets(resolve("../client/build"));
+  app.enableCors();
   await app.listen(process.env.APP);
   console.log('Server is listening on port ' + process.env.APP)
 }

@@ -30,7 +30,7 @@ export class GqlAuthGuard implements CanActivate {
                     throw new Error("User's Role not valid");
                 
                 gqlCtx.getContext().user = user; //Save  User to Context
-
+                
             }
 
             return true;

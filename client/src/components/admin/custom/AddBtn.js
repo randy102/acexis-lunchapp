@@ -1,7 +1,7 @@
 import React from "react";
 import { Button,Modal} from "antd";
 
-export default function SiteAddBtn(props) {
+export default function AddBtn(props) {
 
     return (
         <div className="user-btn">
@@ -11,7 +11,7 @@ export default function SiteAddBtn(props) {
             </Button>
             
             <Modal
-                title="Add Site"
+                title= {props.btnName}
                 visible={props.visible}
                 onOk={props.handleOk}
                 confirmLoading={props.confirmLoading}

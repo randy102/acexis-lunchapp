@@ -1,35 +1,47 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {useLazyQuery} from "@apollo/client"
 import { Form, Icon, Input, Button, message } from "antd";
 import { Redirect } from "react-router-dom";
 import sha from "sha.js";
 import { USER_LOGIN } from '../../graphql/login';
-import { isLogin, getUser, logIn } from '../../services/auth';
+import { isLogin, getUser, logIn, hashPassword } from '../../services/auth';
+import {checkEmpty} from "../../services/user"
 import "../../assets/css/auth.css"
 
 export default function Login() {
     const [doLogin, {data}] = useLazyQuery(USER_LOGIN);
-
+    const [btnLoding, setBtnLoading] = useState(false);
+    const [name,setName] = useState("");
+    const [password, setPassword] = useState("");
+ 
     function handleSubmit(e){
         e.preventDefault();
-        const name = e.target.username.value;
-        const pass = e.target.password.value;
-        var password = sha('sha256').update(pass).digest('hex');
-
+        const {error,isValid} = checkEmpty({name,password});
+        if(!isValid){
+            message.error(error);
+            return;
+        }
+        setBtnLoading(true);
         doLogin({
             variables:{
                 name,
-                password
+                password: hashPassword(password)
             }
         })
     }
-
-    if(data){
-        if(data.login === "error")
-            message.error("Login Fail!");
-        else
-            logIn(data.login);
-    }
+    useEffect(()=>{
+        if(data){
+            setBtnLoading(false);
+            if(data.login === "error"){
+                message.error("Login Fail!");
+                setName("");
+                setPassword("");
+            }
+            else
+                logIn(data.login);
+        }
+    },[data])
+    
 
     if(isLogin()){
         const role = getUser('role');
@@ -48,21 +60,21 @@ export default function Login() {
                     <Input
                         prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }}/>}
                         placeholder="User name..."
-                        type="text"
-                        name="username"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
                     />
                 </Form.Item>
                 <Form.Item>
-                    <Input
+                    <Input.Password
                         prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }}/>}
-                        type="password"
                         placeholder="Password..."
-                        name="password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
                     />
                 </Form.Item>
                 <Form.Item>
                    
-                    <Button type="primary" htmlType="submit" className="login-form-button" >
+                    <Button type="primary" htmlType="submit" className="login-form-button" loading={btnLoding}>
                         Log in
                     </Button>
                    

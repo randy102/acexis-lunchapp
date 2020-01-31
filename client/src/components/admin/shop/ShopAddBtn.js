@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, message } from "antd";
 import { useMutation } from "@apollo/client";
-import { validateUserInput } from "../../../services/user";
+import { checkEmpty } from "../../../services/user";
 import AddBtn from "../custom/AddBtn";
 import { ADD_SHOP } from "../../../graphql/shop";
 
@@ -20,7 +20,7 @@ export default function ShopAddBtn({ refetch }) {
     }
 
     function handleOk() {
-        const { isValid, error } = validateUserInput({ name });
+        const { isValid, error } = checkEmpty({ name });
 
         if (!isValid) {
             message.error(error);

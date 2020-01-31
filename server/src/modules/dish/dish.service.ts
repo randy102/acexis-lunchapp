@@ -20,9 +20,13 @@ export class DishService {
         return this.repo.save(dish);
     }
 
-    async deleteDish(id: string) {
-        
+    deleteDish(id: string) {
         return this.repo.delete(id);
+    }
+
+    async deleteDishByShop(shop: string){
+        const dishes = await this.repo.find({shop});
+        return this.repo.remove(dishes);
     }
 
     updateDish(id: string, name: string): Promise<any>{

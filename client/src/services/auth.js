@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import sha from "sha.js";
 
 export function isLogin(){
     if(getToken()){
@@ -31,4 +32,8 @@ export function getUser(field){
     }
     else
         return jwt.decode(getToken());
+}
+
+export function hashPassword(pass){
+    return sha('sha256').update(pass).digest('hex');
 }

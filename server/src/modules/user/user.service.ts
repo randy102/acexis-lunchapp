@@ -32,6 +32,10 @@ export class UserService {
             return this.repo.find({ site });
     }
 
+    user(id: string){
+        return this.repo.findOne(id);
+    }
+
     login(name: string, password: string): Promise<string> {
         return new Promise(async (resolve, reject) => {
 
@@ -44,6 +48,19 @@ export class UserService {
             }
             else reject("error"); 
         });
+    }
+
+    changePassword(id: string, old: string, password: string){
+        return new Promise(async (resolve, reject) =>{
+            const user = await this.repo.findOne(id);
+            if(user.password !== old)
+                reject({error: "Password is wrong!"});
+            else{
+                user.password = password;
+                await this.repo.save(user);
+                resolve({success: "Password has been changed!"});
+            }
+        })
     }
 
     addUser(user: AddUserInput): Promise<User>{

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, message } from "antd";
 import { useMutation } from "@apollo/client";
-import { validateUserInput } from "../../../services/user";
+import { checkEmpty } from "../../../services/user";
 import AddBtn from "../custom/AddBtn";
 import { ADD_DISH } from '../../../graphql/dish';
 
@@ -24,7 +24,7 @@ export default function DishAddBtn({refetch, curShop}) {
     }
 
     function handleOk() {
-        const { isValid, error } = validateUserInput({ name });
+        const { isValid, error } = checkEmpty({ name });
 
         if (!isValid) {
             message.error(error);

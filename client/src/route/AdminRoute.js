@@ -9,16 +9,14 @@ import Menu from "../components/admin/Menu";
 export default function AdminRoute(props) {
     return (
         <div id="AdminRouteWrap">
-            <div id="AdminContentWrap">
-                <Switch>
-                    <Route path={`${props.match.url}/order`} component={Order}/>
-                    <Route path={`${props.match.url}/menu`} component={Menu} />
-                    <Route path={`${props.match.url}/shop`} component={Shop} />
-                    <Route path={`${props.match.url}/site`} component={Site} />
-                    <Route path={`${props.match.url}/user`} component={User} />
-                    <Route path={`${props.match.url}/`} component={User} />
-                </Switch>
-            </div>
+            <Switch>
+                <Route path={`${props.match.url}/order`} component={Order} />
+                <Route path={`${props.match.url}/menu`} component={Menu} />
+                <Route path={`${props.match.url}/shop`} component={Shop} />
+                <Route path={`${props.match.url}/site`} component={Site} />
+                <Route path={`${props.match.url}/user`} component={User} />
+                <Route path={`${props.match.url}/`} component={User} />
+            </Switch>
         </div>
     );
 }

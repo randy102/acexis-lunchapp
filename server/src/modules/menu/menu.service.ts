@@ -21,15 +21,11 @@ export class MenuService {
         return this.repo.save(me);
     }
 
-    async updateMenu(id: string, status: MenuStatus, site: string): Promise<Menu>{
-        const menu = await this.repo.findOne(id);
-        menu.status = status;
-        menu.site = site;
-        return this.repo.save(menu);
+    async updateMenu(id: string, status: MenuStatus, name: string){
+        return this.repo.update(id, {status,name});
     }
 
-    async deleteMenu(id: string): Promise<Menu>{
-        const menu = await this.repo.findOne(id);
-        return this.repo.remove(menu);
+    async deleteMenu(id: string){
+        return this.repo.delete(id);
     }
 }

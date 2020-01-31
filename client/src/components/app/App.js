@@ -1,10 +1,14 @@
 import React from 'react'
+import Header from "../Header"
+import AppRoute from '../../route/AppRoute'
+import "../../assets/css/app.css"
 
 export default function App(props) {
-    console.log(props);
+    
     return (
         <div>
-            App
+            <Header/>
+            <AppRoute {...props}/>
         </div>
     )
 }

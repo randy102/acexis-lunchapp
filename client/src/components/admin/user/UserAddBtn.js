@@ -4,7 +4,8 @@ import SiteOption from "./SiteOption";
 import { useMutation } from "@apollo/client";
 import sha from "sha.js";
 import { ADD_USER } from "../../../graphql/user";
-import { validateUserInput } from "../../../services/user";
+import { checkEmpty } from "../../../services/user";
+import {hashPassword} from "../../../services/auth";
 
 const { Option } = Select;
 
@@ -27,7 +28,7 @@ export default function UserAddBtn({refetch}) {
     }
 
     function handleOk() {
-        const {isValid, error} = validateUserInput({name, password, role, site});
+        const {isValid, error} = checkEmpty({name, password, role, site});
 
         if(!isValid){
             message.error(error);
@@ -40,9 +41,7 @@ export default function UserAddBtn({refetch}) {
             variables: {
                 user: {
                     name,
-                    password: sha("sha256")
-                        .update(password)
-                        .digest("hex"),
+                    password: hashPassword(password),
                     status: "ACTIVE",
                     role,
                     site
@@ -78,7 +77,8 @@ export default function UserAddBtn({refetch}) {
                     <Form.Item>
                         <Input
                             type="text"
-                            onChange={e => setName(e.target.value)} value={name}
+                            onChange={e => setName(e.target.value)} 
+                            value={name}
                             placeholder="User name..."
                         />
                     </Form.Item>

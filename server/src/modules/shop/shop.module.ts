@@ -7,6 +7,7 @@ import { DishModule } from '../dish/dish.module';
 
 @Module({
   providers: [ShopResolver, ShopService],
-  imports: [TypeOrmModule.forFeature([Shop]), DishModule]
+  imports: [TypeOrmModule.forFeature([Shop]), DishModule],
+  exports: [ShopService]
 })
 export class ShopModule {}

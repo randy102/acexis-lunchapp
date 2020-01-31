@@ -1,4 +1,4 @@
-export function validateUserInput(fields){
+export function checkEmpty(fields){
     
         for(let key in fields){
             if(fields[key] === '')

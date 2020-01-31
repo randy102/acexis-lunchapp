@@ -7,20 +7,20 @@ import * as moment from "moment";
 export class OrderService {
     constructor(@InjectRepository(Order) private readonly repo: Repository<Order>){}
 
-    orders(filter: string): Promise<Order[]>{
-        if(filter !== ""){
-            const objectFilter = JSON.parse(filter);
-            return this.repo.find({...objectFilter});
-        }
-        else
-            return this.repo.find();
-        
+    orders(){
+        return this.repo.find();
     }
 
-    addOrder(user: string, item: string, quantity: number): Promise<Order>{
+    orderOfUser(user, date){
+        return this.repo.find({user, created_date: date});
+    }
+
+    addOrder(user: string, item: string, quantity: number, note: string): Promise<Order>{
         const order = new Order();
         order.user = user;
         order.item = item;
+        order.note = note;
+        order.confirmed = false;
         order.quantity = quantity;
         order.created_date = moment().format("DD/MM/YYYY");
         return this.repo.save(order);

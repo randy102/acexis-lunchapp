@@ -44,8 +44,8 @@ export class UserResolver {
     }
 
     @Mutation()
-    async updateUserSelf(@Args() {data}, @Context('user') {id}){
-        return await this.userService.updateUser(id,data);
+    async changePassword(@Args() {old, password}, @Context('user') {_id}){
+        return await this.userService.changePassword(_id,old,password);
     }
 
     @ResolveProperty()

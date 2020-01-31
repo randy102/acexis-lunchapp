@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import Login from '../components/auth/Login'
 import { appGuard, adminGuard } from '../services/guard'
 
@@ -10,7 +10,7 @@ export default function IndexRoute() {
                 <Route path="/admin" render={adminGuard} />
                 <Route path="/app" render={appGuard} />
                 <Route path="/login" component={Login}/>
-                <Route path="/" render={appGuard}/>
+                <Route path="/" render={() => <Redirect to="/app" />}/>
             </Switch>
         </div>
     )

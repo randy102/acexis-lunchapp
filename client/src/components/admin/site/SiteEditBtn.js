@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Form, Input, Modal, message } from "antd";
 import { useMutation } from "@apollo/client";
 import { UPDATE_SITE } from '../../../graphql/site';
-import { validateUserInput } from "../../../services/user";
+import { checkEmpty } from "../../../services/user";
 
 export default function SiteEditBtn({gridApi, refetch}) {
     const [visible, setVisible] = useState(false);
@@ -12,7 +12,7 @@ export default function SiteEditBtn({gridApi, refetch}) {
     const [id, setId] = useState("");
     function handleOk() {
 
-        const {isValid, error} = validateUserInput({name});
+        const {isValid, error} = checkEmpty({name});
 
         if(!isValid){
             message.error(error);
@@ -36,7 +36,7 @@ export default function SiteEditBtn({gridApi, refetch}) {
             setId(selected["_id"]);
             setVisible(true);
         } else {
-            message.error("Must choose a User!");
+            message.error("Must choose a Site!");
         }
     }
 

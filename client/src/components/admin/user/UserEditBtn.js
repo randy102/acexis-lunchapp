@@ -3,6 +3,7 @@ import { Button, Form, Input, Select, Modal, message } from "antd";
 import SiteOption from "./SiteOption";
 import { useMutation } from "@apollo/client";
 import { UPDATE_USER } from "../../../graphql/user";
+import { hashPassword } from "../../../services/auth";
 const { Option } = Select;
 
 export default function UserEditBtn({ gridApi, refetch }) {
@@ -25,7 +26,7 @@ export default function UserEditBtn({ gridApi, refetch }) {
             status
         };
 
-        if (password !== "") data = { ...data, password };
+        if (password !== "") data = { ...data, password: hashPassword(password) };
 
         updateUser({
             variables: {

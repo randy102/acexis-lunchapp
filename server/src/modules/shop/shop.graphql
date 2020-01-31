@@ -11,5 +11,5 @@ type Mutation{
 type Shop{
     _id: String
     name: String
-    dishes: Int
+    dishes: [Dish]
 }

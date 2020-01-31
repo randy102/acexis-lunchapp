@@ -3,7 +3,7 @@ import {Form, Input,message } from "antd";
 import { useMutation } from "@apollo/client";
 import EditBtn from "../custom/EditBtn";
 import { UPDATE_SHOP } from "../../../graphql/shop";
-import { validateUserInput } from "../../../services/user";
+import { checkEmpty } from "../../../services/user";
 
 export default function ShopEditBtn({gridApi, refetch}) {
 
@@ -13,7 +13,7 @@ export default function ShopEditBtn({gridApi, refetch}) {
     const [updateShop, { data }] = useMutation(UPDATE_SHOP);
     const [id, setId] = useState("");
     function handleOk() {
-        const {isValid, error} = validateUserInput({name});
+        const {isValid, error} = checkEmpty({name});
 
         if(!isValid){
             message.error(error);
@@ -67,7 +67,7 @@ export default function ShopEditBtn({gridApi, refetch}) {
                         type="text"
                         onChange={e => setName(e.target.value)}
                         value={name}
-                        placeholder="Site name..."
+                        placeholder="Shop name..."
                     />
                 </Form.Item>
             </form>
