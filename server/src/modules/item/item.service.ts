@@ -24,6 +24,7 @@ export class ItemService {
         item.shop = "";
         item.total = total;
         item.booked = 0;
+        item.cancelled = 0;
         return this.repo.save(item);
     }
 
@@ -36,6 +37,7 @@ export class ItemService {
             temp.name = input.name;
             temp.total = total;
             temp.booked = 0;
+            temp.cancelled = 0;
             items.push(temp);
         }
         return this.repo.save(items);
@@ -50,6 +52,7 @@ export class ItemService {
             temp.name = input.name;
             temp.total = input.total;
             temp.booked = 0;
+            temp.cancelled = 0;
             items.push(temp);
         }
         return this.repo.save(items);
@@ -64,6 +67,7 @@ export class ItemService {
     async decreaseItem(id: string, quantity: number){
         const item = await this.repo.findOne(id);
         item.booked -= quantity;
+        item.cancelled += quantity;
         return this.repo.save(item);
     }
 
@@ -72,6 +76,7 @@ export class ItemService {
     }
 
     deleteItem(id: string){
+
         return this.repo.delete(id);
     }
 }

@@ -1,13 +1,21 @@
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation, Subscription } from '@nestjs/graphql';
 import { ItemService } from './item.service';
-import { UsePipes } from '@nestjs/common';
+import { UsePipes, UseGuards } from '@nestjs/common';
 import { ToStringPipe } from 'src/common/pipe/to-string.pipe';
 import { ShopService } from '../shop/shop.service';
+import { PubSub } from 'graphql-subscriptions';
+import { GqlAuthGuard } from 'src/common/guard/auth.guard';
+import { OrderService } from '../order/order.service';
+const pubSub = new PubSub();
 
 @Resolver('Item')
+@UseGuards(GqlAuthGuard)
 @UsePipes(ToStringPipe)
 export class ItemResolver {
-    constructor(private readonly itemService: ItemService, private readonly shopSerVice: ShopService){}
+    constructor(
+        private readonly itemService: ItemService, 
+        private readonly shopSerVice: ShopService,
+        private readonly orderService: OrderService){}
 
     @Query()
     async items(@Args() {menu} ){
@@ -16,7 +24,8 @@ export class ItemResolver {
 
     @Mutation()
     async addItem(@Args() {menu, name, total}){
-        return await this.itemService.addItem(menu, name, parseInt(total))
+        const result =  await this.itemService.addItem(menu, name, parseInt(total));
+        return result;
     }
 
     @Mutation()
@@ -30,7 +39,9 @@ export class ItemResolver {
     @Mutation()
     async updateItem(@Args() {id, total, name}){
         const result = await this.itemService.updateItem(id,name,total);
-        if(result) return true;
+        if(result){
+            return true;
+        } 
         return false;
     }
 

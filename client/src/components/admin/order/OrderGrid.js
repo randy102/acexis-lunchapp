@@ -11,7 +11,7 @@ export default function OrderGrid({ setGridApi, doRefetch}) {
         { headerName: "Site", field: "site", rowGroup: true },
         { headerName: "Confirm", field: "confirmed", width:100 },
         { headerName: "Quantity", field: "quantity", width:100},
-        { headerName: "Note", field: "note" },
+        { headerName: "Note", field: "note", width: 100 },
         { headerName: "Booked Date", field: "created_date",rowGroup: true, width:120},
     ];
 

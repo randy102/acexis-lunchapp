@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid from "../admin/custom/Grid";
 
-export default function OrderGrid({data,loading,error, setOrderApi}) {
+export default function OrderGrid({data,loading,error, setOrderApi, height}) {
     const columnDefs = [
         {checkboxSelection: true,width: 60},
         { headerName: "Item", field: "item" },
@@ -16,7 +16,8 @@ export default function OrderGrid({data,loading,error, setOrderApi}) {
         error,
         columnDefs,
         data,
-        pagination: false
+        pagination: false,
+        height
     }
 
     return (

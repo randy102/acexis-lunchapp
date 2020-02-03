@@ -19,4 +19,7 @@ export class Item{
 
     @Column()
     booked: number;
+
+    @Column()
+    cancelled: number
 }

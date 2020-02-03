@@ -12,13 +12,13 @@ export default function MenuInfo() {
             />
             <Alert
                 style={{margin: '10px 0'}}
-                message="If Menu is CLOSED, USER can not order!"
+                message="If Menu is CLOSED, only USER can not order!"
                 type="warning"
                 showIcon
             />
             <Alert
                 style={{margin: '10px 0'}}
-                message="If Menu is BLOCKED, ADMIN and MOD can not republish or edit MENU"
+                message="If Menu is BLOCKED, both ADMIN and MOD can not edit MENU or make orders"
                 type="warning"
                 showIcon
             />

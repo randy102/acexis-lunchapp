@@ -13,10 +13,10 @@ export class User{
     password: string;
 
     @Column()
-    role: userRole;
+    role: UserRole;
 
     @Column()
-    status: userStatus;
+    status: UserStatus;
 
     @Column()
     site: string;
@@ -26,13 +26,13 @@ export class User{
     }
 }
 
-export enum userRole{
+export enum UserRole{
     ADMIN="ADMIN",
     MOD="MOD",
-    APP_USER="APP_USER"
+    USER="USER"
 }
 
-export enum userStatus{
+export enum UserStatus{
     ACTIVE="ACTIVE",
     BLOCKED="BLOCKED"
 }

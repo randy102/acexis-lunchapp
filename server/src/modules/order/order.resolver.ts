@@ -6,6 +6,10 @@ import { ItemService } from '../item/item.service';
 import { UserService } from '../user/user.service';
 import { SiteService } from '../site/site.service';
 import { GqlAuthGuard } from 'src/common/guard/auth.guard';
+import { UserRole, MenuStatus, UserStatus } from 'src/graphql.schema';
+import { MenuService } from '../menu/menu.service';
+import { ConfigService } from '../config/config.service';
+import moment = require('moment');
 
 @Resolver('Order')
 @UseGuards(GqlAuthGuard)
@@ -15,7 +19,9 @@ export class OrderResolver {
         private readonly orderService: OrderService, 
         private readonly itemService: ItemService,
         private readonly userService: UserService,
-        private readonly siteService: SiteService){}
+        private readonly siteService: SiteService,
+        private readonly menuService: MenuService,
+        private readonly configService: ConfigService){}
 
     @Query()
     async orders() {
@@ -23,28 +29,40 @@ export class OrderResolver {
     }
 
     @Query()
-    async orderOfUser(@Args() {date}, @Context('user') {_id}){
-        return await this.orderService.orderOfUser(_id, date);
+    async orderOfUser(@Context('user') {_id}){
+        return await this.orderService.orderOfUser(_id);
     }
 
     @Mutation()
-    async addOrder(@Args() {user,item,quantity, note}){        
+    async addOrderUser(@Context('user') {_id}, @Args() {item,quantity, note}){
+        const itemEntity = await this.itemService.item(item);
+        const menuEntity = await this.menuService.menu(itemEntity.menu);
+        const userEntity = await this.userService.user(_id);
+
+        if(userEntity.status === UserStatus.BLOCKED)
+            return {error: "Your account is Blocked! Please contact Admin for detail"}
+        if(userEntity.role === UserRole.USER && menuEntity.status !== MenuStatus.PUBLISHED)
+            return {error: "Menu is unavailable! Please try again in a few minutes"}
+        
+
+        const result = await this.orderService.addOrder(_id,item,quantity,note);
+
+        if(result) 
+            await this.itemService.increaseItem(item, parseInt(quantity));
+           
+        return {success: "Success"}; 
+    }
+
+    @Mutation()
+    async addOrder(@Args() {user,item,quantity, note}){
         const result = await this.orderService.addOrder(user,item,quantity,note);
+
         if(result) {
             await this.itemService.increaseItem(item, parseInt(quantity));
             return true;
         }
-        else return false; 
-    }
-
-    @Mutation()
-    async increaseOrder(@Args() {id}){
-        return await this.orderService.changeQuantity(id,1);
-    }
-
-    @Mutation()
-    async decreaseOrder(@Args() {id}){
-        return await this.orderService.changeQuantity(id, -1);
+        
+        return false;
     }
 
     @Mutation()
@@ -57,17 +75,35 @@ export class OrderResolver {
         else return false;
     }
 
+    @Mutation()
+    async confirmOrder(@Args() {id}){
+        const config = await this.configService.getConfig();
+        const startConfirm = moment(config.startConfirm, "HH:mm");
+        if(moment().isSameOrAfter(startConfirm)){
+            await this.orderService.confirmOrder(id);
+            return {success: "Confirm successfuly!"}
+        }
+        else{
+            return {error: `Not able to confirm now! Please back at ${config.startConfirm}`}
+        }
+
+    }
+
     @ResolveProperty()
     async user(@Parent() {user: id}){
         const user = await this.userService.user(id);
-        return user.name;
+        if(user) return user.name;
+        return ""
     }
 
     @ResolveProperty()
     async site(@Parent() {user: id}){
         const user = await this.userService.user(id);
-        const site = await this.siteService.site(user.site);
-        return site.name;
+        if(user){
+            const site = await this.siteService.site(user.site);
+            return site.name;
+        }
+        return "";
     }
 
     @ResolveProperty()

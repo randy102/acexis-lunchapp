@@ -15,6 +15,14 @@ export class MenuService {
         return this.repo.find({site});
     }
 
+    menu(id: string){
+        return this.repo.findOne(id);
+    }
+
+    userMenu(site){
+        return this.repo.findOne({site, status: MenuStatus.PUBLISHED});
+    }
+
     addMenu(menu: AddMenuInput): Promise<Menu>{
         const me = new Menu(menu);
         me.created_date = moment().format("DD/MM/YYYY");
@@ -27,5 +35,13 @@ export class MenuService {
 
     async deleteMenu(id: string){
         return this.repo.delete(id);
+    }
+
+    async closeMenu(){
+        const publishedMenu = await this.repo.find({status: MenuStatus.PUBLISHED});
+        for(let menu of publishedMenu){
+            menu.status = MenuStatus.CLOSED;
+        }
+        return await this.repo.save(publishedMenu);
     }
 }

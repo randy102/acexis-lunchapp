@@ -11,6 +11,12 @@ export default function MenuDeleteBtn({ refetch, gridApi, setCurMenu }) {
     function handleDelete() {
         const selected = gridApi.getSelectedRows();
         if (selected.length > 0) {
+
+            if(selected[0]['status'] !== "UNPUBLISHED"){
+                message.error("Can not delete Menu after it is published");
+                return;
+            }
+            
             const { _id: id } = selected[0];
             deleteMenu({ variables: { id } });
             setVisible(true);

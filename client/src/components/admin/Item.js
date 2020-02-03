@@ -20,12 +20,12 @@ export default function Item({curMenu,curSite,menuState}) {
     function handleClick(e){
         const isBlock = e.target.classList.contains("unclickable");
         if(isBlock)
-            message.error("Can not change Items of Blocked Menu")
+            message.error("Can not change Items of Blocked or Published Menu")
     }
 
     return (
         <div  style={{marginTop: "-5px"}} >
-            <div onClick={handleClick} className={menuState === "BLOCKED" ? "unclickable" : ""}>
+            <div onClick={handleClick} className={menuState === "BLOCKED" || menuState === "PUBLISHED" ? "unclickable" : ""}>
                 <ItemAddBtn curMenu={curMenu} refetch={refetch}/>
                 <ItemAddFromShop curMenu={curMenu} refetch={refetch}/>
                 <ItemAddFromExcel curMenu={curMenu} refetch={refetch}/>

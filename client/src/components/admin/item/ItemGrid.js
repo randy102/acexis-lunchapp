@@ -6,10 +6,11 @@ import { GET_ITEMES } from '../../../graphql/item';
 
 export default function ItemGrid({curMenu, setGridApi, doRefetch}) {
     const columnDefs = [
-        {checkboxSelection: true,width: 60},
+        {checkboxSelection: true,width: 80},
         { headerName: "Name", field: "name"},
-        { headerName: "Booked", field: "booked"},
+        { headerName: "Currently Booked", field: "booked"},
         { headerName: "Total", field: "total"},
+        { headerName: "Cancelled", field: "cancelled"},
         { headerName: "Shop", field: "shop"},
     ];
     

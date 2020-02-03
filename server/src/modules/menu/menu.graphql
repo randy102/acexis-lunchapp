@@ -1,11 +1,16 @@
 type Query{
     menus(site: String!): [Menu]!
+    userMenu: [Item]
 }
 
 type Mutation{
     addMenu(site: String!,status: MenuStatus!, name: String!): Menu
     deleteMenu(id: String!): Menu
     updateMenu(id: String!, status: MenuStatus!, name: String!): Menu
+}
+
+type Subscription{
+    menuPublished(site: String): Menu
 }
 
 input AddMenuInput{
@@ -21,6 +26,7 @@ type Menu{
     status: MenuStatus
     created_date: String
 }
+
 
 enum MenuStatus{
     UNPUBLISHED

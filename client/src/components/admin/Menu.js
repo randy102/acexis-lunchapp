@@ -17,6 +17,8 @@ export default function Menu() {
 
     function menuRefetch() {
         setDoRefetch(!doRefetch);
+        setCurMenu("");
+        setMenuState("");
     }
 
     function handleMenuClick() {

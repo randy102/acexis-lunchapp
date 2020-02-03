@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Upload, Icon, message } from 'antd';
-
+import {getToken} from "../../../services/auth";
 import AddBtn from "../custom/AddBtn";
 
 const { Dragger } = Upload;
@@ -38,6 +38,9 @@ export default function ItemAddFromExcel({ curMenu, refetch }) {
         name: 'file',
         action: `${process.env.REACT_APP_SERVER || "http://localhost:3001"}/item/uploadexcel?menu=${curMenu}`,
         name:"file",
+        headers: {
+            authorization: getToken()
+        }, 
         accept:".xlsx",
         onChange(info) {
           const { status } = info.file;

@@ -4,19 +4,20 @@ import { useQuery } from "@apollo/client";
 import { GET_USER_ORDERS } from "../../graphql/order";
 import OrderGrid from "./OrderGrid";
 import { Divider, Icon } from "antd";
+import Menu from "./Menu";
+import OrderDeleteBtn from "./OrderDelete";
+import OrderConfirmBtn from "./OrderConfirm";
 
 export default function Order() {
     const [orderApi, setOrderApi] = useState(undefined);
+    const [menuRefetch, setMenuRefetch] = useState(false);
 
     const {
         data: orderData,
         loading: orderLoading,
-        error: orderError
-    } = useQuery(GET_USER_ORDERS, {
-        variables: {
-            date: moment().format("DD/MM/YYYY")
-        }
-    });
+        error: orderError,
+        refetch: orderRefetch
+    } = useQuery(GET_USER_ORDERS);
 
     const orderProps = {
         data: orderData,
@@ -29,10 +30,19 @@ export default function Order() {
         <div>
             <Divider>
                 <h1>
+                    <Icon type="menu" /> Menu
+                </h1>
+            </Divider>
+            <Menu orderApi={orderApi} orderRefetch={() => orderRefetch()} menuRefetch={menuRefetch}/>
+
+            <Divider>
+                <h1>
                     <Icon type="profile" /> Ordered
                 </h1>
             </Divider>
-            <OrderGrid {...orderProps} />
+            <OrderDeleteBtn gridApi={orderApi} refetch={() => {orderRefetch(); setMenuRefetch(!menuRefetch)}} />
+            <OrderConfirmBtn gridApi={orderApi} refetch={()=>{orderRefetch()}} />
+            <OrderGrid {...orderProps} height="200px"/>
         </div>
     );
 }

@@ -5,11 +5,13 @@ import User from "../components/admin/User";
 import Shop from "../components/admin/Shop";
 import Order from "../components/admin/Order";
 import Menu from "../components/admin/Menu";
+import Config from "../components/admin/Config";
 
 export default function AdminRoute(props) {
     return (
         <div id="AdminRouteWrap">
             <Switch>
+                <Route path={`${props.match.url}/config`} component={Config} />
                 <Route path={`${props.match.url}/order`} component={Order} />
                 <Route path={`${props.match.url}/menu`} component={Menu} />
                 <Route path={`${props.match.url}/shop`} component={Shop} />

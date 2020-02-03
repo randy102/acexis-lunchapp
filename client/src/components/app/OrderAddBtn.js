@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Form, message, InputNumber, Input } from "antd";
 import { useMutation } from "@apollo/client";
-import AddBtn from "../custom/AddBtn";
-import { ADD_ORDER } from "../../../graphql/order";
-import UserSearch from "./UserOption";
-import { checkEmpty } from "../../../services/user";
+import AddBtn from "../admin/custom/AddBtn";
+import { ADD_ORDER_USER } from "../../graphql/order";
 
-export default function OrderAddBtn({ gridApi, curSite, refetch }) {
+
+export default function OrderAddBtn({ gridApi, refetch, orderApi }) {
     const [visible, setVisible] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
 
-    const [user, setUser] = useState("");
     const [item, setItem] = useState("");
     const [note, setNote] = useState("");
     const [quantity, setQuantity] = useState(1);
-    const [remaining, setRemaining] = useState(0);
 
-    const [addOrder, { data }] = useMutation(ADD_ORDER);
+    const [addOrder, { data }] = useMutation(ADD_ORDER_USER);
 
-    console.log(user);
-    
     function showModal() {
-        let selected = gridApi.getSelectedRows();
+        const orders = orderApi.getDisplayedRowCount();
+        if(orders > 0){
+            message.error("You have ordered already!");
+            return;
+        }
 
+
+        let selected = gridApi.getSelectedRows();
         if (selected.length > 0) {
             selected = selected[0];
 
@@ -32,7 +33,6 @@ export default function OrderAddBtn({ gridApi, curSite, refetch }) {
             }
 
             setItem(selected["_id"]);
-            setRemaining(selected["total"] - selected["booked"]);
             setVisible(true); //Show modal
         } else {
             message.error("Must choose an Item!");
@@ -44,18 +44,11 @@ export default function OrderAddBtn({ gridApi, curSite, refetch }) {
     }
 
     function handleOk() {
-        const { isValid} = checkEmpty({ user });
-
-        if (!isValid) {
-            message.error("Must choose a User");
-            return;
-        }
 
         setConfirmLoading(true);
         
         addOrder({
             variables: {
-                user,
                 quantity,
                 item,
                 note
@@ -64,6 +57,9 @@ export default function OrderAddBtn({ gridApi, curSite, refetch }) {
     }
 
     useEffect(() => {
+        if(data && data.addOrderUser.error){
+            message.error(data.addOrderUser.error);
+        }
         refetch();
         setConfirmLoading(false);
         setVisible(false);
@@ -80,16 +76,14 @@ export default function OrderAddBtn({ gridApi, curSite, refetch }) {
         confirmLoading
     };
 
+
     return (
         <AddBtn {...props}>
             <Form>
-                <b>Choose User:</b>
-                <UserSearch setUserId={setUser} curSite={curSite} />
-                <div style={{ margin: "10px 0" }}></div>
                 <b>Quantity: </b>
                 <InputNumber
                     min={1}
-                    max={remaining}
+                    max={1}
                     value={quantity}
                     onChange={value => setQuantity(value)}
                     placeholder="Quantity..."

@@ -1,0 +1,13 @@
+type Config{
+    closeOrder: String
+    closeConfirm: String
+    startConfirm: String
+}
+
+type Query{
+    config: Config
+}
+
+type Mutation{
+    updateConfig(order: String, closeConfirm: String, startConfirm: String): Config
+}

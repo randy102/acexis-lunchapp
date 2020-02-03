@@ -5,12 +5,16 @@ import { ToStringPipe } from 'src/common/pipe/to-string.pipe';
 import { AddUserInput } from 'src/graphql.schema';
 import { GqlAuthGuard } from 'src/common/guard/auth.guard';
 import { SiteService } from '../site/site.service';
+import { OrderService } from '../order/order.service';
 
 @Resolver('User')
 @UsePipes(ToStringPipe)
 @UseGuards(GqlAuthGuard)
 export class UserResolver {
-    constructor(private readonly userService: UserService, private readonly siteService: SiteService){}
+    constructor(
+        private readonly userService: UserService, 
+        private readonly siteService: SiteService, 
+        private readonly orderService: OrderService){}
 
     
     @Query()
@@ -34,6 +38,7 @@ export class UserResolver {
     @Mutation()
     @SetMetadata("requiredRoles", ['ADMIN'])
     async deleteUser(@Args() {id}){
+        await this.orderService.deleteOrders(id);
         return await this.userService.deleteUser(id);
     }
 

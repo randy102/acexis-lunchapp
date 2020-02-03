@@ -16,14 +16,23 @@ export const GET_ORDERS = gql`
 `;
 
 export const GET_USER_ORDERS = gql`
-    query OrderOfUser($date: String){
-        orderOfUser(date: $date){
+    query{
+        orderOfUser{
             _id
             item
             note
             quantity
             confirmed
             created_date
+        }
+    }
+`;
+
+export const CONFIRM_ORDER = gql`
+    mutation ConfirmOrder($id: String!){
+        confirmOrder(id: $id){
+            success
+            error
         }
     }
 `;
@@ -37,6 +46,15 @@ export const DELETE_ORDER = gql`
 export const ADD_ORDER = gql`
     mutation AddOrder($user: String!, $quantity: Int!, $item: String!, $note: String!){
         addOrder(user: $user, quantity: $quantity, item: $item, note: $note)
+    }
+`;
+
+export const ADD_ORDER_USER = gql`
+    mutation AddOrderUser( $quantity: Int!, $item: String!, $note: String!){
+        addOrderUser(quantity: $quantity, item: $item, note: $note){
+            success
+            error
+        }
     }
 `;
 

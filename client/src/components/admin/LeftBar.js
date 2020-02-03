@@ -1,6 +1,7 @@
 import React from "react";
 import { Menu, Icon, Layout } from "antd";
 import { Link } from "react-router-dom";
+import { getUser } from "../../services/auth";
 const { Sider } = Layout;
 
 function getKey(path){
@@ -10,7 +11,8 @@ function getKey(path){
         'site',
         'shop',
         'menu',
-        'order'
+        'order',
+        'config'
     ];
 
     const curPath = path.split("/")[2] || "user";
@@ -34,6 +36,7 @@ export default function LeftBar(props) {
                 style={leftBarStyle}
             >
                 <Menu theme="dark" mode="inline" selectedKeys={getKey(props.location.pathname)}>
+                    <div style={{color: "white", padding: "20px 25px", fontWeight: "bold"}}>Hello {getUser("name")}!</div>
                     <Menu.Item key="1">
                         <Link to="/admin/user">
                             <Icon type="user" />
@@ -66,6 +69,13 @@ export default function LeftBar(props) {
                         <Link to="/admin/order">
                             <Icon type="profile" />
                             <span className="nav-text">Order</span>
+                        </Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="6">
+                        <Link to="/admin/config">
+                            <Icon type="setting" />
+                            <span className="nav-text">Config</span>
                         </Link>
                     </Menu.Item>
                 </Menu>

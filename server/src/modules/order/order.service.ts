@@ -7,15 +7,17 @@ import * as moment from "moment";
 export class OrderService {
     constructor(@InjectRepository(Order) private readonly repo: Repository<Order>){}
 
-    orders(){
+    orders(filter?){
+        if(filter)
+            return this.repo.find(filter);
         return this.repo.find();
     }
 
-    orderOfUser(user, date){
-        return this.repo.find({user, created_date: date});
+    orderOfUser(user){
+        return this.repo.find({user, confirmed: false});
     }
 
-    addOrder(user: string, item: string, quantity: number, note: string): Promise<Order>{
+    addOrder(user: string, item: string, quantity: number, note: string){
         const order = new Order();
         order.user = user;
         order.item = item;
@@ -26,17 +28,26 @@ export class OrderService {
         return this.repo.save(order);
     }
 
-    async changeQuantity(id: string, action: -1 | 1): Promise<Order>{
-        const order = await this.repo.findOne(id);
-        if(action < 0)
-            order.quantity--;
-        else
-            order.quantity++;
-        return this.repo.save(order);
-    }
 
-    async deleteOrder(id: string): Promise<Order>{
+    async deleteOrder(id: string){
         const order = await this.repo.findOne(id);
         return this.repo.remove(order);
+    }
+
+    async deleteOrders(user){
+        const orders = await this.repo.find({user});
+        return this.repo.remove(orders);
+    }
+
+    confirmOrder(id: string){
+        return new Promise(async resolve => {
+            const result = await this.repo.update(id, {confirmed: true});
+           if(result) resolve(true)
+           else resolve(false);
+        })
+    }
+
+    updateOrders(orders: Order[]){
+        return this.repo.save(orders);
     }
 }

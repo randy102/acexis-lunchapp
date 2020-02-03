@@ -1,13 +1,20 @@
 type Query{
     orders: [Order]!
-    orderOfUser(date: String): [Order]!
+    orderOfUser: [Order]!
 }
 
 type Mutation{
-    addOrder(user: String, item: String, quantity: Int, item: String, note: String): Boolean
+    addOrder(user: String, item: String, quantity: Int, note: String): Boolean
+    addOrderUser(item: String, quantity: Int, note: String): Result
     increaseOrder(id: String): Order
     decreaseOrder(id: String): Order
     deleteOrder(id: String): Boolean
+    confirmOrder(id: String): Result
+}
+
+type Result{
+    success: String
+    error: String
 }
 
 type Order{
