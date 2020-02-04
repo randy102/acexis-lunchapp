@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Icon, Divider, Button, Row, Col, message } from "antd";
+import { Icon, Divider, Button, Row, Col, message, Result } from "antd";
 import moment from "moment";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_CONFIG, UPDATE_CONFIG } from "../../graphql/config";
 import TimeKeeper from "react-timekeeper";
+import { getUser } from "../../services/auth";
 
 export default function Config() {
+   
     const [order, setOrder] = useState("00:00");
     const [closeConfirm, setConfirm] = useState("00:00");
     const [startConfirm, setStartConfirm] = useState("00:00");
@@ -39,7 +41,16 @@ export default function Config() {
         }
     }, [afterUpdate])
 
-    console.log({order,closeConfirm});
+    if (getUser("role") === "MOD") {
+        return (
+            <Result
+                status="403"
+                title="403"
+                subTitle="Sorry, you are not authorized to access this page."
+            />
+        );
+    }
+    
     return (
         <div>
             <Divider>

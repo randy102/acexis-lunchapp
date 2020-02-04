@@ -15,6 +15,7 @@ import { ScheduleModule } from "@nestjs/schedule";
 import { ConfigModule as CogModule } from "./modules/config/config.module";
 import { APP_GUARD } from "@nestjs/core";
 import { GqlAuthGuard } from "./common/guard/auth.guard";
+import { AppController } from "./app.controller";
 
 @Module({
     imports: [
@@ -43,7 +44,7 @@ import { GqlAuthGuard } from "./common/guard/auth.guard";
         CogModule
     ],
 
-    controllers: [ItemController],
+    controllers: [AppController,ItemController],
     providers: [
         {
             provide: APP_GUARD,

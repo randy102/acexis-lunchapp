@@ -3,12 +3,18 @@ import { message } from "antd";
 import { useMutation } from "@apollo/client";
 import DeleteBtn from "../custom/DeleteBtn";
 import { DELETE_ORDER } from "../../../graphql/order";
+import { getUser } from "../../../services/auth";
 
 export default function OrderDeleteBtn({gridApi, refetch}) {
     const [visible, setVisible] = useState(false);
     const [deleteOrder, { data }] = useMutation(DELETE_ORDER);
 
     function handleDelete() {
+        if (getUser("role") === "MOD") {
+            message.error("Sorry, you are not authorized to do this action")
+            return;
+        }
+        
         const selected = gridApi.getSelectedRows();
         
         if (selected.length > 0) {

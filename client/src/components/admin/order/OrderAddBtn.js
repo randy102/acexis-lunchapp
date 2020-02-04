@@ -5,6 +5,7 @@ import AddBtn from "../custom/AddBtn";
 import { ADD_ORDER } from "../../../graphql/order";
 import UserSearch from "./UserOption";
 import { checkEmpty } from "../../../services/user";
+import {getUser} from "../../../services/auth";
 
 export default function OrderAddBtn({ gridApi, curSite, refetch }) {
     const [visible, setVisible] = useState(false);
@@ -17,10 +18,13 @@ export default function OrderAddBtn({ gridApi, curSite, refetch }) {
     const [remaining, setRemaining] = useState(0);
 
     const [addOrder, { data }] = useMutation(ADD_ORDER);
-
-    console.log(user);
     
     function showModal() {
+        if (getUser("role") === "MOD") {
+            message.error("Sorry, you are not authorized to do this action")
+            return;
+        }
+        
         let selected = gridApi.getSelectedRows();
 
         if (selected.length > 0) {

@@ -13,6 +13,11 @@ export class GqlAuthGuard implements CanActivate {
     async canActivate(context: ExecutionContext) {
         //Handle normal Request
         const normalCtx = context.switchToHttp().getRequest();
+        const handler = context.getHandler().name;
+        
+        if(handler === "getReactApp")
+            return true;
+
         if(normalCtx){
             if(this.userService.validate(normalCtx.headers.authorization))
                 return true;

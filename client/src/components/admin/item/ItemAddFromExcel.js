@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Upload, Icon, message } from 'antd';
 import {getToken} from "../../../services/auth";
 import AddBtn from "../custom/AddBtn";
-
+import {getUser} from "../../../services/auth";
 const { Dragger } = Upload;
 
 export default function ItemAddFromExcel({ curMenu, refetch }) {
@@ -10,6 +10,11 @@ export default function ItemAddFromExcel({ curMenu, refetch }) {
     const [confirmLoading, setConfirmLoading] = useState(false);
 
     function showModal() {
+        if (getUser("role") === "MOD") {
+            message.error("Sorry, you are not authorized to do this action")
+            return;
+        }
+
         if (!curMenu) {
             message.error("Must choose a Menu");
             return;

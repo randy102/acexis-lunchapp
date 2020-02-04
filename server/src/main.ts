@@ -10,7 +10,6 @@ async function bootstrap() {
 
   app.useStaticAssets(resolve("../client/build"));
   app.enableCors();
-
   await app.listen(process.env.PORT);
 
   //Initiate Cron Job

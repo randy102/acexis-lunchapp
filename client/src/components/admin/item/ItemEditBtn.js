@@ -4,7 +4,7 @@ import { useMutation } from "@apollo/client";
 import EditBtn from "../custom/EditBtn";
 import { checkEmpty } from "../../../services/user";
 import { UPDATE_ITEM } from "../../../graphql/item";
-
+import {getUser} from "../../../services/auth";
 export default function ItemEditBtn({ gridApi, refetch }) {
     const [visible, setVisible] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
@@ -39,6 +39,11 @@ export default function ItemEditBtn({ gridApi, refetch }) {
     }
 
     function handleEdit() {
+        if (getUser("role") === "MOD") {
+            message.error("Sorry, you are not authorized to do this action")
+            return;
+        }
+
         let selected = gridApi.getSelectedRows();
         if (selected.length > 0) {
             selected = selected[0];

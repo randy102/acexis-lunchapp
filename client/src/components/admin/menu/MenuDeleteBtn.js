@@ -3,12 +3,17 @@ import { message } from "antd";
 import { useMutation } from "@apollo/client";
 import { DELETE_MENU } from "../../../graphql/menu";
 import DeleteBtn from "../custom/DeleteBtn";
+import {getUser} from "../../../services/auth";
 
 export default function MenuDeleteBtn({ refetch, gridApi, setCurMenu }) {
     const [visible, setVisible] = useState(false);
     const [deleteMenu, { data }] = useMutation(DELETE_MENU);
 
     function handleDelete() {
+        if (getUser("role") === "MOD") {
+            message.error("Sorry, you are not authorized to do this action")
+            return;
+        }
         const selected = gridApi.getSelectedRows();
         if (selected.length > 0) {
 

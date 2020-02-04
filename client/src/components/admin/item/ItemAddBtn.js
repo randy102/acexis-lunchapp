@@ -4,6 +4,7 @@ import { useMutation } from "@apollo/client";
 import { checkEmpty } from "../../../services/user";
 import AddBtn from "../custom/AddBtn";
 import { ADD_ITEM } from "../../../graphql/item";
+import {getUser} from "../../../services/auth";
 
 export default function ItemAddBtn({ refetch, curMenu }) {
     const [visible, setVisible] = useState(false);
@@ -13,6 +14,11 @@ export default function ItemAddBtn({ refetch, curMenu }) {
     const [addItem, { data }] = useMutation(ADD_ITEM);
 
     function showModal() {
+        if (getUser("role") === "MOD") {
+            message.error("Sorry, you are not authorized to do this action")
+            return;
+        }
+
         if (!curMenu) {
             message.error("Must choose a Menu");
             return;
