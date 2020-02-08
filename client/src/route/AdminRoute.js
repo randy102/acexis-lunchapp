@@ -6,6 +6,7 @@ import Shop from "../components/admin/Shop";
 import Order from "../components/admin/Order";
 import Menu from "../components/admin/Menu";
 import Config from "../components/admin/Config";
+import MenuPublishedNotification from "../components/MenuPublishedNotification";
 
 export default function AdminRoute(props) {
     return (
@@ -19,6 +20,7 @@ export default function AdminRoute(props) {
                 <Route path={`${props.match.url}/user`} component={User} />
                 <Route path={`${props.match.url}/`} component={User} />
             </Switch>
+            <MenuPublishedNotification/>
         </div>
     );
 }

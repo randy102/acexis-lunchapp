@@ -2,8 +2,11 @@ import { ApolloClient, InMemoryCache, ApolloLink, split, HttpLink, getMainDefini
 import {setContext} from "apollo-link-context";
 import { WebSocketLink } from 'apollo-link-ws';
 
+const httpUri = process.env.REACT_APP_GRAPHQL_ENDPOINT;
+const wsUri = process.env.REACT_APP_SUBSCRIPTION_ENDPOINT;
+
 const httpLink = new HttpLink({
-  uri: process.env.REACT_APP_GRAPHQL_ENDPOINT
+  uri:   httpUri || "https://lun-app-randy102.herokuapp.com/graphql"
 })
 
 const authLink = setContext((_, { headers }) => ({
@@ -14,9 +17,13 @@ const authLink = setContext((_, { headers }) => ({
 }))
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:3001/graphql`,
+  uri:  wsUri || "wss://lun-app-randy102.herokuapp.com/graphql",
   options: {
-    reconnect: true
+    reconnect: true,
+    reconnectionAttempts: 3,
+    connectionParams: () =>({
+      authorization: localStorage.getItem('token') || ''
+    })
   }
 });
 

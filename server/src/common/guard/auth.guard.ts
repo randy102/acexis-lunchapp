@@ -2,6 +2,8 @@ import { Injectable, ExecutionContext, CanActivate } from "@nestjs/common";
 import { GqlExecutionContext } from "@nestjs/graphql";
 import { UserService } from "../../modules/user/user.service";
 import { Reflector } from "@nestjs/core";
+import { Socket } from "dgram";
+import { ExecutionContextHost } from "@nestjs/core/helpers/execution-context-host";
 
 @Injectable()
 export class GqlAuthGuard implements CanActivate {
@@ -14,7 +16,7 @@ export class GqlAuthGuard implements CanActivate {
         //Handle normal Request
         const normalCtx = context.switchToHttp().getRequest();
         const handler = context.getHandler().name;
-        
+
         if(handler === "getReactApp")
             return true;
 
@@ -32,6 +34,7 @@ export class GqlAuthGuard implements CanActivate {
         const NoGuardFields = ["login","menuPublished"];
         const requiredRoles = this.reflector.get("requiredRoles",context.getHandler());
         const gqlCtx = GqlExecutionContext.create(context);
+       
         const gqlField = gqlCtx.getInfo().fieldName;
         if (!NoGuardFields.includes(gqlField)) {
 

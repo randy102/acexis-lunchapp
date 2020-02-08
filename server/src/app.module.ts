@@ -16,6 +16,7 @@ import { ConfigModule as CogModule } from "./modules/config/config.module";
 import { APP_GUARD } from "@nestjs/core";
 import { GqlAuthGuard } from "./common/guard/auth.guard";
 import { AppController } from "./app.controller";
+import { UserService } from "./modules/user/user.service";
 
 @Module({
     imports: [
@@ -28,10 +29,31 @@ import { AppController } from "./app.controller";
             synchronize: true,
             useUnifiedTopology: true
         }),
-        GraphQLModule.forRoot({
-            typePaths: ["./**/*.graphql"],
-            installSubscriptionHandlers: true,
-            context: ({ req }) => ({ request: req })
+        GraphQLModule.forRootAsync({
+            imports: [UserModule],
+            useFactory: async (userService: UserService) => ({
+                typePaths: ["./**/*.graphql"],
+                context: ({ req, connection }) =>
+                    connection ? { ...connection.context } : { request: req },
+                installSubscriptionHandlers: true,
+                subscriptions: {
+                    onConnect: param => {
+                        try {
+                            const token = param["authorization"];
+                            if (!token) throw new Error("Not having token");
+
+                            const isValid = userService.validate(token);
+                            if (!isValid) throw new Error("Token not valid");
+
+                            return userService.decode(token);
+                        } catch (err) {
+                            console.log(err);
+                            return false;
+                        }
+                    }
+                }
+            }),
+            inject: [UserService]
         }),
         ScheduleModule.forRoot(),
         UserModule,
@@ -44,7 +66,7 @@ import { AppController } from "./app.controller";
         CogModule
     ],
 
-    controllers: [AppController,ItemController],
+    controllers: [AppController, ItemController],
     providers: [
         {
             provide: APP_GUARD,

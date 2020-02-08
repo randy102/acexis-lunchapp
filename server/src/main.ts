@@ -8,9 +8,9 @@ import { GqlAuthGuard } from './common/guard/auth.guard';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.useStaticAssets(resolve("../client/build"));
+  app.useStaticAssets(resolve("./build"));
   app.enableCors();
-  await app.listen(process.env.PORT);
+  await app.listen(process.env.PORT || 3000);
 
   //Initiate Cron Job
   const configService = app.get(ConfigService);

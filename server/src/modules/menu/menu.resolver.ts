@@ -7,6 +7,7 @@ import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { PubSub } from 'graphql-subscriptions';
 import { MenuStatus } from 'src/graphql.schema';
+import { Menu } from 'src/entities/menu.entity';
 const pubSub = new PubSub();
 
 @Resolver('Menu')
@@ -55,7 +56,12 @@ export class MenuResolver {
         return await this.menuService.deleteMenu(id);
     }
 
-    @Subscription()
+    @Subscription('menuPublished', {
+        filter: (payload,varible,context) => {
+            console.log({payload,varible,context})
+            return true;
+        }
+    })
     menuPublished(@Args() {site}){
         return pubSub.asyncIterator(`menuPublishedAtSite-${site}`);
     }   

@@ -6,12 +6,12 @@ import { notification, Icon } from "antd";
 
 export default function MenuPublishedNotification() {
    
-    const {data, loading} = useSubscription(MENU_PUBLISHED_SUBS, {
+    const {data} = useSubscription(MENU_PUBLISHED_SUBS, {
         variables: {
             site: isLogin() ? getUser('site') : ""
         }
     })
-    if(!loading && data.menuPublished && isLogin()){
+    if(data && data.menuPublished && isLogin()){
        
         notification.open({
             message: "Menu is published! Ordering is available now!",

@@ -7,6 +7,6 @@ import { AppModule } from './app.module';
 export class AppController {
   @Get()
   getReactApp(@Res() res: Response) {
-        return res.sendFile(resolve("../client/build/index.html"));
+        return res.sendFile(resolve("./build/index.html"));
   }
 }
