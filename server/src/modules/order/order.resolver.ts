@@ -38,12 +38,15 @@ export class OrderResolver {
         const itemEntity = await this.itemService.item(item);
         const menuEntity = await this.menuService.menu(itemEntity.menu);
         const userEntity = await this.userService.user(_id);
+        const config = await this.configService.getConfig();
+        const endOrder = moment(config.closeOrder, "HH:mm");
 
         if(userEntity.status === UserStatus.BLOCKED)
             return {error: "Your account is Blocked! Please contact Admin for detail"}
         if(userEntity.role === UserRole.USER && menuEntity.status !== MenuStatus.PUBLISHED)
             return {error: "Menu is unavailable! Please try again in a few minutes"}
-        
+        if(moment().isSameOrAfter(endOrder))
+            return {error: "Menu is closed. Can not order!"}
 
         const result = await this.orderService.addOrder(_id,item,quantity,note);
 
@@ -79,7 +82,9 @@ export class OrderResolver {
     async confirmOrder(@Args() {id}){
         const config = await this.configService.getConfig();
         const startConfirm = moment(config.startConfirm, "HH:mm");
-        if(moment().isSameOrAfter(startConfirm)){
+        const endConfirm = moment(config.closeConfirm, "HH:mm");
+
+        if(moment().isSameOrAfter(startConfirm) && moment().isAfter(endConfirm)){
             await this.orderService.confirmOrder(id);
             return {success: "Confirm successfuly!"}
         }
