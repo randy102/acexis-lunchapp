@@ -84,7 +84,7 @@ export class OrderResolver {
         const startConfirm = moment(config.startConfirm, "HH:mm");
         const endConfirm = moment(config.closeConfirm, "HH:mm");
 
-        if(moment().isSameOrAfter(startConfirm) && moment().isAfter(endConfirm)){
+        if(moment().isSameOrAfter(startConfirm) && moment().isBefore(endConfirm)){
             await this.orderService.confirmOrder(id);
             return {success: "Confirm successfuly!"}
         }
